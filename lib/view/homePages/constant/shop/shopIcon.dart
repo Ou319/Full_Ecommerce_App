@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShopIcon extends StatelessWidget {
-    const ShopIcon({ Key? key}) : super(key: key);
+  final Color color;
+    const ShopIcon({required this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ShopIcon extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.shopping_bag_outlined,
-                  color: Colors.white,
+                  color: color,
                   size: 34,
                 ),
               ),

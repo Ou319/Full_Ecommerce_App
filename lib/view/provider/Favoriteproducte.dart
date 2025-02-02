@@ -5,17 +5,17 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Buyproductes with ChangeNotifier {
+class Favoriteproducte with ChangeNotifier {
   String text = "";
-  List<Mycontainer2> ProducteSelected = [];
+  List<Mycontainer2> FavoriteproducteSelected = [];
   
  // do it when the class created 
-  Buyproductes() {
+  Favoriteproducte() {
     loadProducts(); // start when and get the the save producte on open app
 
   }
 
-  int get productCount => ProducteSelected.length;
+  int get productCount => FavoriteproducteSelected.length;
 
   //
   Future<void> loadProducts() async {
@@ -25,7 +25,7 @@ class Buyproductes with ChangeNotifier {
     if (savedProducts != null) {
       
       final List<dynamic> decodedData = json.decode(savedProducts);
-      ProducteSelected = decodedData.map((item) => Mycontainer2(
+      FavoriteproducteSelected = decodedData.map((item) => Mycontainer2(
         Price: item['price'],
         Title: item['title'],
         Type: item['type'],
@@ -40,7 +40,7 @@ class Buyproductes with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     
   
-    final List<Map<String, dynamic>> productsData = ProducteSelected.map((product) => {
+    final List<Map<String, dynamic>> productsData = FavoriteproducteSelected.map((product) => {
       'price': product.Price,
       'title': product.Title,
       'type': product.Type,
@@ -51,13 +51,13 @@ class Buyproductes with ChangeNotifier {
   }
 
   void addProducte(Mycontainer2 Producte) {
-    ProducteSelected.add(Producte);
+    FavoriteproducteSelected.add(Producte);
     _saveProducts(); 
     notifyListeners();
   }
 
   void removeProducte(Mycontainer2 Producte) {
-    ProducteSelected.remove(Producte);
+    FavoriteproducteSelected.remove(Producte);
     _saveProducts();
     notifyListeners();
   }

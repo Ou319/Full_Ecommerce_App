@@ -31,6 +31,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/producte/
+    - assets/images/imagesport/
     - assets/icons/
     - assets/vidios/
 

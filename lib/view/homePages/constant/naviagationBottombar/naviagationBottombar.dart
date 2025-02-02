@@ -15,12 +15,20 @@ class Naviagationbottombar extends StatefulWidget {
 class _NaviagationbottombarState extends State<Naviagationbottombar> {
   final PageController _pageController = PageController();
   int _selectedIndex = 0;
-  final List<Widget> _pages = [
-    Homapage(),
-    Store(),
-    Favorite(),
-    Profile(),
-  ];
+  late final List<Widget> _pages; // Declare the list as late
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the _pages list after the object is fully constructed
+    _pages = [
+      Homapage(pageController: _pageController),
+      Store(),
+      Favorite(),
+      Profile(),
+    ];
+  }
+
   void _onTabSelected(int index) {
     setState(() {
       _selectedIndex = index;
@@ -50,18 +58,17 @@ class _NaviagationbottombarState extends State<Naviagationbottombar> {
             right: 0,
             child: Container(
               height: 80,
-              padding: EdgeInsets.only(left: 0,right: 0),
+              padding: EdgeInsets.only(left: 0, right: 0),
               decoration: BoxDecoration(
-                border:Border(
-                  top: BorderSide(color: Colors.grey,width: 1),
-                )
-              ),
+                  border: Border(
+                top: BorderSide(color: Colors.grey, width: 1),
+              )),
               child: GNav(
                 gap: 8,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 backgroundColor: Colors.white,
-              
-                color:  Colors.black54,
+                color: Colors.black54,
                 activeColor: Colors.black,
                 tabBackgroundColor: Colors.black.withOpacity(0.2),
                 selectedIndex: _selectedIndex,
@@ -69,7 +76,8 @@ class _NaviagationbottombarState extends State<Naviagationbottombar> {
                 tabs: const [
                   GButton(icon: Icons.home_filled, text: "Home"),
                   GButton(icon: Icons.storefront_outlined, text: "Store"),
-                  GButton(icon: Icons.favorite_border_outlined, text: "Favorite"),
+                  GButton(
+                      icon: Icons.favorite_border_outlined, text: "Favorite"),
                   GButton(icon: Icons.person, text: "Profile"),
                 ],
               ),
