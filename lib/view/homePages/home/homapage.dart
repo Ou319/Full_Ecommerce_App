@@ -38,13 +38,17 @@ class _HomapageState extends State<Homapage> {
             // this is the first container
             Container(
               width: mySize.width,
-              height: mySize.height * 0.45,
+              height: mySize.height * 0.37,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 76, 169, 244),
+                  color: Colors.transparent,
+                  border: Border.all(width: 1,color: Colors.black),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
-                  )),
+                  ),
+                  
+                  ),
+
               child: Column(
                 children: [
                   SizedBox(
@@ -63,13 +67,13 @@ class _HomapageState extends State<Homapage> {
                             Text(
                               "Good day for shopping",
                               style: GoogleFonts.inder(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
                               "OUTMANE EL OUAFA",
                               style: GoogleFonts.inder(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -77,7 +81,7 @@ class _HomapageState extends State<Homapage> {
                           ],
                         ),
                         //icon for the storyboard
-                        ShopIcon(color: Colors.white),
+                        ShopIcon(color: Colors.black),
                       ],
                     ),
                   ),
@@ -93,6 +97,7 @@ class _HomapageState extends State<Homapage> {
                       height: 65,
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        border: Border.all(width: 1,color: Colors.black),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Padding(
@@ -131,7 +136,7 @@ class _HomapageState extends State<Homapage> {
                           child: Text(
                             "Popular Category ",
                             style: GoogleFonts.inder(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -161,6 +166,7 @@ class _HomapageState extends State<Homapage> {
                                       height: 90,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
+                                        border: Border.all(width: 1,color:Colors.black),
                                         color: Colors.white,
                                       ),
                                       child: Lottie.network(item.UrlImg),
@@ -171,7 +177,7 @@ class _HomapageState extends State<Homapage> {
                                       margin: EdgeInsets.only(right: 6),
                                       child: Text(item.name,
                                           style: GoogleFonts.inder(
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ))),
                                 ],
                               );

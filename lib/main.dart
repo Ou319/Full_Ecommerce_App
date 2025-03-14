@@ -1,3 +1,4 @@
+import 'package:ecomme_app/view/authpages/loginPages/interface/f_pageLogin.dart';
 import 'package:ecomme_app/view/homePages/store/store.dart';
 import 'package:ecomme_app/view/provider/Buyproductes.dart';
 import 'package:ecomme_app/view/commePage/firstpageComme.dart';
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(useMaterial3: true),
         // home: Store(),
-        // home: Naviagationbottombar(),
-        home: FisrtPageComme(),
+        home: F_Pagelogin(),
+        // home: FisrtPageComme(),
       ),
     );
   }

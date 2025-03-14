@@ -34,15 +34,23 @@ class _Mycontainer2State extends State<Mycontainer2> {
     return GestureDetector(
       onTap: (){
         // TODO:
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailprodute(
-              title: widget.Title,
-              type: widget.Type,
-              Price: widget.Price,
-              imageAsset: widget.ImageAasset,
-              isFavorit: widget.isFavorit,
-              
-             
-        )));
+      Navigator.push(
+  context, 
+  MaterialPageRoute(
+    builder: (context) => Detailprodute(
+      title: widget.Title,
+      type: widget.Type,
+      Price: widget.Price,
+      imageAsset: widget.ImageAasset,
+      isFavorit: widget.isFavorit,
+      onFavoriteChanged: (bool newValue) {
+        setState(() {
+          widget.isFavorit = newValue;
+        });
+      },
+    )
+  )
+);
       },
       child: Container(
         // color: Colors.blueAccent,
