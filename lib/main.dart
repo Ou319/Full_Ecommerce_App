@@ -1,8 +1,10 @@
 import 'package:ecomme_app/view/authpages/loginPages/interface/f_pageLogin.dart';
+import 'package:ecomme_app/view/authpages/signuPpages/interfaces/SignUppage.dart';
 import 'package:ecomme_app/view/homePages/store/store.dart';
 import 'package:ecomme_app/view/provider/Buyproductes.dart';
 import 'package:ecomme_app/view/commePage/firstpageComme.dart';
 import 'package:ecomme_app/view/homePages/constant/naviagationBottombar/naviagationBottombar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -30,7 +32,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(useMaterial3: true),
         // home: Store(),
-        home: F_Pagelogin(),
+        // home: Signuppage(),
+        // home: F_Pagelogin(),
+        // home: NavigationBarBottomMode(),
+        home: Naviagationbottombar(),
+
         // home: FisrtPageComme(),
       ),
     );
