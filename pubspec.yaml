@@ -20,6 +20,7 @@ dependencies:
   provider: ^6.1.2  #this is provider we use for save data 
   shared_preferences: ^2.3.5
   share_plus: ^10.1.4
+  internet_connection_checker: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -31,8 +32,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/producte/
-    - assets/images/imagesport/
     - assets/icons/
     - assets/vidios/
 

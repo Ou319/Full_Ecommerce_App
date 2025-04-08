@@ -1,7 +1,8 @@
+import 'package:ecomme_app/presentation/store/storeview.dart';
 import 'package:ecomme_app/view/homePages/favorite/favorite.dart';
 import 'package:ecomme_app/view/homePages/home/homapage.dart';
 import 'package:ecomme_app/view/homePages/profile/profile.dart';
-import 'package:ecomme_app/view/homePages/store/store.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -23,7 +24,7 @@ class _NaviagationbottombarState extends State<Naviagationbottombar> {
     // Initialize the _pages list after the object is fully constructed
     _pages = [
       Homapage(pageController: _pageController),
-      Store(),
+      Storeview(),
       Favorite(),
       Profile(),
     ];

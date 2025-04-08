@@ -1,6 +1,6 @@
-import 'package:ecomme_app/data/categories/Popularcategory.dart';
-import 'package:ecomme_app/data/listContainer/ListoFContainers.dart';
-import 'package:ecomme_app/data/producteHome/PopularProducte.dart';
+import 'package:ecomme_app/datalist/categories/Popularcategory.dart';
+import 'package:ecomme_app/datalist/listContainer/ListoFContainers.dart';
+import 'package:ecomme_app/datalist/producteHome/PopularProducte.dart';
 
 import 'package:ecomme_app/view/homePages/constant/shop/shopIcon.dart';
 import 'package:ecomme_app/view/homePages/home/pages/Container.dart';
