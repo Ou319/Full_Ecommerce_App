@@ -4,7 +4,6 @@ import 'package:ecomme_app/domain/model/modeles.dart';
 import 'package:ecomme_app/presentation/base/baseviewmodel.dart';
 import 'package:ecomme_app/presentation/ressourses/assetsmanager.dart';
 import 'package:ecomme_app/presentation/ressourses/textmanager.dart';
-import 'package:flutter/material.dart';
 
 class Oboardingviewmodel extends Baseviewmodel{
 
@@ -50,7 +49,6 @@ class Oboardingviewmodel extends Baseviewmodel{
 
 
 
-  @override
   Sink get inputSliderViewobject => _streamController.sink;
 
 
@@ -65,7 +63,6 @@ class Oboardingviewmodel extends Baseviewmodel{
       );
     }
 
-  @override
   Stream<SliderViewobject> get outputSliderViewobject => _streamController.stream.map((sliderViewObject) => sliderViewObject as SliderViewobject);
 
   List<OnboardingSlider> _getsliderdata()=>[

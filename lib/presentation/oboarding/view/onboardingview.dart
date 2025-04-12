@@ -5,7 +5,6 @@ import 'package:ecomme_app/presentation/ressourses/routesmanaget.dart';
 import 'package:ecomme_app/presentation/ressourses/stylemanager.dart';
 import 'package:ecomme_app/presentation/ressourses/textmanager.dart';
 import 'package:ecomme_app/presentation/ressourses/valuesmanager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -25,7 +24,7 @@ class _OnboardingviewState extends State<Onboardingview> {
   }
 
   _skkipedOnboarding() {
-    Navigator.pushReplacementNamed(context, Routes.homeRoutes);
+    Navigator.pushReplacementNamed(context, Routes.naviagationbottombar);
     // go to next page homepage
   }
 
