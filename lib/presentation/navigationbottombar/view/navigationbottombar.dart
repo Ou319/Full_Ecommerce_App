@@ -1,5 +1,4 @@
 import 'package:ecomme_app/presentation/favorite/favoriteview.dart';
-import 'package:ecomme_app/presentation/home/home.dart';
 import 'package:ecomme_app/presentation/navigationbottombar/viewmodel/navigationbottombarmodel.dart';
 import 'package:ecomme_app/presentation/profile/profile.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';

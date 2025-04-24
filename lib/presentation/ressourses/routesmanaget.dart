@@ -1,7 +1,7 @@
 import 'package:ecomme_app/data/network/networkInfo.dart';
 import 'package:ecomme_app/presentation/favorite/favoriteview.dart';
 import 'package:ecomme_app/presentation/forgetpassword/forgetpassword.dart';
-import 'package:ecomme_app/presentation/home/home.dart';
+import 'package:ecomme_app/presentation/home/view/home.dart';
 import 'package:ecomme_app/presentation/login/view/login.dart';
 import 'package:ecomme_app/presentation/navigationbottombar/view/navigationbottombar.dart';
 import 'package:ecomme_app/presentation/oboarding/view/onboardingview.dart';
@@ -34,7 +34,7 @@ class Routganarator{
     switch(setting.name){
       case Routes.splaschRoutes:
         final networkInfo = NetworkInfoImpl(InternetConnectionChecker.createInstance());
-        return MaterialPageRoute(builder: (_) => SplaschView(networkInfo: networkInfo,));
+        return MaterialPageRoute(builder: (_) => SplashView(networkInfo: networkInfo,));
       case Routes.loginRoutes:
         return MaterialPageRoute(builder: (_) => const Login());
       case Routes.naviagationbottombar:

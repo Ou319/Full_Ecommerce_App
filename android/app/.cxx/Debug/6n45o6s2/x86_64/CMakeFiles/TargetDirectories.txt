@@ -1,0 +1,2 @@
+C:/Users/surface/Desktop/test/ecomme_app/android/app/.cxx/Debug/6n45o6s2/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/surface/Desktop/test/ecomme_app/android/app/.cxx/Debug/6n45o6s2/x86_64/CMakeFiles/rebuild_cache.dir
