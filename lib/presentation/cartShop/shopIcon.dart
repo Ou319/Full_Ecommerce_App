@@ -1,11 +1,12 @@
+import 'package:ecomme_app/presentation/cartShop/cartshop.dart';
 import 'package:ecomme_app/view/homePages/ShopFiles/prodectSelected/producteselected.dart';
-import 'package:ecomme_app/view/provider/Buyproductes.dart';
+import 'package:ecomme_app/app/provider/Buyproductes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShopIcon extends StatelessWidget {
   final Color color;
-    const ShopIcon({required this.color, Key? key}) : super(key: key);
+  const ShopIcon({required this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class ShopIcon extends StatelessWidget {
                   Navigator.push(
                       (context),
                       MaterialPageRoute(
-                          builder: (context) => Producteselected()));
+                          builder: (context) => CartShop()));
                 },
                 child: Icon(
                   Icons.shopping_bag_outlined,

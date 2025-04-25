@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ecomme_app/app/app_prefs.dart';
+import 'package:ecomme_app/app/provider/app_prefs.dart';
 import 'package:ecomme_app/data/network/networkInfo.dart';
 import 'package:ecomme_app/presentation/ressourses/assetsmanager.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';

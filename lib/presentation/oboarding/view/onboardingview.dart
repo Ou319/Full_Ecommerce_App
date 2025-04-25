@@ -1,4 +1,4 @@
-import 'package:ecomme_app/app/app_prefs.dart';
+import 'package:ecomme_app/app/provider/app_prefs.dart';
 import 'package:ecomme_app/domain/model/modeles.dart';
 import 'package:ecomme_app/presentation/oboarding/viewmodel/oboardingviewmodel.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';
