@@ -80,4 +80,6 @@ class Buyproductes with ChangeNotifier {
   double get totalPrice {
     return _producteSelected.fold(0, (sum, item) => sum + (item.Price * item.count));
   }
+
+  get addProducte => null;
 }

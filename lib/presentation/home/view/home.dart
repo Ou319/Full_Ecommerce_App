@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:ecomme_app/datalist/categories/Popularcategory.dart';
+import 'package:ecomme_app/presentation/home/view/DBCategoryDetailsPage.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';
 import 'package:ecomme_app/presentation/ressourses/textmanager.dart';
 import 'package:ecomme_app/presentation/ressourses/valuesmanager.dart';
@@ -9,12 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -89,9 +85,9 @@ class HeaderWidget extends StatelessWidget {
   final List<CategoryModel> categories;
   final List<Map<String, dynamic>> dbCategories;
   final bool isLoading;
-  
+
   const HeaderWidget({
-    super.key, 
+    super.key,
     required this.categories,
     required this.dbCategories,
     required this.isLoading,
@@ -116,7 +112,6 @@ class HeaderWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: Appsize.a36),
-          // User greeting section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -140,12 +135,10 @@ class HeaderWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              ShopIcon(color: Colors.black)
+              ShopIcon(color: Colors.black),
             ],
           ),
           const SizedBox(height: Appsize.a36),
-
-          // Search bar section
           Container(
             width: size.width,
             height: 60,
@@ -168,8 +161,6 @@ class HeaderWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Appsize.a36),
-
-          // Categories section inside the border
           SizedBox(
             height: 120,
             child: isLoading
@@ -263,54 +254,83 @@ class DBCategoryItemWidget extends StatelessWidget {
   }
 }
 
-class DBCategoryDetailsPage extends StatelessWidget {
-  final Map<String, dynamic> category;
-
-  const DBCategoryDetailsPage({super.key, required this.category});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(category['name'] ?? 'Category Details'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (category['picture'] != null)
-              SizedBox(
-                height: 200,
-                width: 200,
-                child: Lottie.network(
-                  category['picture'],
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.error, color: Colors.red, size: 60);
-                  },
-                ),
-              ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                category['description'] ?? 'No description available',
-                style: const TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DealsOfTheDayWidget extends StatelessWidget {
+// 🔥 Deals Of The Day with Auto-Sliding and Full-width Design (with text)
+class DealsOfTheDayWidget extends StatefulWidget {
   const DealsOfTheDayWidget({super.key});
 
   @override
+  State<DealsOfTheDayWidget> createState() => _DealsOfTheDayWidgetState();
+}
+
+class _DealsOfTheDayWidgetState extends State<DealsOfTheDayWidget> {
+  final supabase = Supabase.instance.client;
+  List<dynamic> newsList = [];
+  bool isLoading = true;
+  late PageController _pageController;
+  late Timer _timer;
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    fetchNews();
+    _startAutoSlide();
+  }
+
+  Future<void> fetchNews() async {
+    try {
+      final response = await supabase
+          .from('news')
+          .select()
+          .order('created_at', ascending: false);
+      setState(() {
+        newsList = response;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching news: $e');
+    }
+  }
+
+  void _startAutoSlide() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < newsList.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (newsList.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'No deals available right now.',
+          style: GoogleFonts.poppins(color: Colors.black54, fontSize: 16),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -321,26 +341,41 @@ class DealsOfTheDayWidget extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
           ),
-          const SizedBox(height: 12),
-          Container(
-            height: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: AppColor.blue.withOpacity(0.1),
-              border: Border.all(color: AppColor.blue.withOpacity(0.3)),
-            ),
-            child: Center(
-              child: Text(
-                'Special Offers Coming Soon!',
-                style: GoogleFonts.poppins(
-                  color: AppColor.blue,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 220,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: newsList.length,
+              itemBuilder: (context, index) {
+                final news = newsList[index];
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.network(
+                        news['img'],
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        left: 16,
+                        child: Text(
+                          news['title'] ?? 'Untitled Deal',
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ],
