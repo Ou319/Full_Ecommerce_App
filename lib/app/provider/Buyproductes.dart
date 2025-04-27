@@ -82,4 +82,6 @@ class Buyproductes with ChangeNotifier {
   }
 
   get addProducte => null;
+
+  void applyFilter(String selectedFilter) {}
 }

@@ -71,6 +71,8 @@ class ProducteModel {
     );
   }
 
+  bool get isClicked => true;
+
   // Method to convert ProducteModel to JSON
   Map<String, dynamic> toJson() {
     return {
