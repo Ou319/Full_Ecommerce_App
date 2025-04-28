@@ -126,6 +126,9 @@ class _ShapeproducteState extends State<Shapeproducte> {
                           try {
                             // Create a ProducteModel correctly
                             final product = ProducteModel(
+
+
+                              
                               Price: widget.price,
                               Title: widget.title,
                               description: "", // You can pass real description if you have

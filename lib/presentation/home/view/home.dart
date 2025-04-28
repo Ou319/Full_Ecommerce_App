@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:ecomme_app/datalist/categories/Popularcategory.dart';
+import 'package:ecomme_app/presentation/home/view/AllProductsPage.dart';
 import 'package:ecomme_app/presentation/home/view/DBCategoryDetailsPage.dart';
+import 'package:ecomme_app/presentation/producte/shapeProducte.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';
 import 'package:ecomme_app/presentation/ressourses/textmanager.dart';
 import 'package:ecomme_app/presentation/ressourses/valuesmanager.dart';
@@ -73,6 +75,8 @@ class _HomeState extends State<Home> {
               ),
               const SizedBox(height: 20),
               const DealsOfTheDayWidget(),
+              const SizedBox(height: 20),
+              const ProductListWidget(), // 🆕 New Products section
             ],
           ),
         ),
@@ -254,7 +258,7 @@ class DBCategoryItemWidget extends StatelessWidget {
   }
 }
 
-// 🔥 Deals Of The Day with Auto-Sliding and Full-width Design (with text)
+// 🔥 Deals Of The Day with Auto-Sliding
 class DealsOfTheDayWidget extends StatefulWidget {
   const DealsOfTheDayWidget({super.key});
 
@@ -383,3 +387,117 @@ class _DealsOfTheDayWidgetState extends State<DealsOfTheDayWidget> {
     );
   }
 }
+
+// 🆕 New Product List section
+class ProductListWidget extends StatefulWidget {
+  const ProductListWidget({super.key});
+
+  @override
+  State<ProductListWidget> createState() => _ProductListWidgetState();
+}
+
+class _ProductListWidgetState extends State<ProductListWidget> {
+  final supabase = Supabase.instance.client;
+  List<dynamic> productList = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  Future<void> fetchProducts() async {
+    try {
+      final response = await supabase
+          .from('producte')
+          .select()
+          .order('created_at', ascending: false);
+      setState(() {
+        productList = response;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching products: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (productList.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'No products available.',
+          style: GoogleFonts.poppins(color: Colors.black54, fontSize: 16),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+         Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Products',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AllProductsPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'View All',
+                  style: GoogleFonts.poppins(
+                    color: Colors.blue,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.7,
+            ),
+            itemCount: productList.length,
+            itemBuilder: (context, index) {
+              final product = productList[index];
+              // return ProductItemWidget(product: product);
+              return Shapeproducte(
+                          rating: double.tryParse(product['rating'].toString()) ?? 0.0,
+                          title: product['name'] ?? 'No Name',
+                          type: product['category'] ?? '',
+                          price: double.tryParse(product['price'].toString()) ?? 0.0,
+                          imageAsset: product['picture'] ?? '',
+                        );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
