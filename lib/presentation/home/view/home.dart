@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ecomme_app/datalist/categories/Popularcategory.dart';
 import 'package:ecomme_app/presentation/home/view/AllProductsPage.dart';
+import 'package:ecomme_app/presentation/home/view/AllBrandsPage.dart';
 import 'package:ecomme_app/presentation/home/view/DBCategoryDetailsPage.dart';
 import 'package:ecomme_app/presentation/producte/shapeProducte.dart';
 import 'package:ecomme_app/presentation/ressourses/colormanager.dart';
@@ -74,9 +75,9 @@ class _HomeState extends State<Home> {
                 isLoading: isLoading,
               ),
               const SizedBox(height: 20),
-              const DealsOfTheDayWidget(),
+              const BrandsWidget(),
               const SizedBox(height: 20),
-              const ProductListWidget(), // 🆕 New Products section
+              const ProductListWidget(),
             ],
           ),
         ),
@@ -141,28 +142,6 @@ class HeaderWidget extends StatelessWidget {
               ),
               ShopIcon(color: Colors.black),
             ],
-          ),
-          const SizedBox(height: Appsize.a36),
-          Container(
-            width: size.width,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                hintText: AppString.search_in_store,
-                hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                contentPadding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-            ),
           ),
           const SizedBox(height: Appsize.a36),
           SizedBox(
@@ -258,65 +237,45 @@ class DBCategoryItemWidget extends StatelessWidget {
   }
 }
 
-// 🔥 Deals Of The Day with Auto-Sliding
-class DealsOfTheDayWidget extends StatefulWidget {
-  const DealsOfTheDayWidget({super.key});
+// New Brands Widget
+class BrandsWidget extends StatefulWidget {
+  const BrandsWidget({super.key});
 
   @override
-  State<DealsOfTheDayWidget> createState() => _DealsOfTheDayWidgetState();
+  State<BrandsWidget> createState() => _BrandsWidgetState();
 }
 
-class _DealsOfTheDayWidgetState extends State<DealsOfTheDayWidget> {
+class _BrandsWidgetState extends State<BrandsWidget> {
   final supabase = Supabase.instance.client;
-  List<dynamic> newsList = [];
+  List<Map<String, dynamic>> brands = [];
   bool isLoading = true;
-  late PageController _pageController;
-  late Timer _timer;
-  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
-    fetchNews();
-    _startAutoSlide();
+    _fetchBrands();
   }
 
-  Future<void> fetchNews() async {
+  Future<void> _fetchBrands() async {
     try {
       final response = await supabase
-          .from('news')
-          .select()
-          .order('created_at', ascending: false);
+          .from('Marks')
+          .select('*')
+          .order('created_at', ascending: false)
+          .limit(4); // Limit to 4 brands
+
       setState(() {
-        newsList = response;
+        brands = List<Map<String, dynamic>>.from(response);
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching news: $e');
-    }
-  }
-
-  void _startAutoSlide() {
-    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-      if (_currentPage < newsList.length - 1) {
-        _currentPage++;
-      } else {
-        _currentPage = 0;
+      if (kDebugMode) {
+        print('Error fetching brands: $e');
       }
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _timer.cancel();
-    super.dispose();
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -325,11 +284,11 @@ class _DealsOfTheDayWidgetState extends State<DealsOfTheDayWidget> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (newsList.isEmpty) {
+    if (brands.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-          'No deals available right now.',
+          'No brands available.',
           style: GoogleFonts.poppins(color: Colors.black54, fontSize: 16),
         ),
       );
@@ -340,47 +299,102 @@ class _DealsOfTheDayWidgetState extends State<DealsOfTheDayWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Deals of the Day',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Popular Brands',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AllBrandsPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'View All',
+                  style: GoogleFonts.poppins(
+                    color: Colors.blue,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            height: 220,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: newsList.length,
-              itemBuilder: (context, index) {
-                final news = newsList[index];
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.network(
-                        news['img'],
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        bottom: 16,
-                        left: 16,
-                        child: Text(
-                          news['title'] ?? 'Untitled Deal',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 2.5,
             ),
+            itemCount: brands.length,
+            itemBuilder: (context, index) {
+              final brand = brands[index];
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      margin: const EdgeInsets.all(8),
+                      child: brand['logo'] != null
+                          ? Lottie.network(
+                              brand['logo'],
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.business, color: Colors.blue);
+                              },
+                            )
+                          : const Icon(Icons.business, color: Colors.blue),
+                    ),
+                  
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            brand['name'] ?? 'Unnamed Brand',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${brand['nbrProducte'] ?? '0'} Products',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
