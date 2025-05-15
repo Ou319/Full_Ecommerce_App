@@ -129,14 +129,11 @@ class EmptyCartView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: isSmallScreen ? 120 : 150,
-            height: isSmallScreen ? 120 : 150,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              shape: BoxShape.circle,
-            ),
+            width: 300,
+            height: 300,
+           
             child: 
-            Lottie.network("https://lottie.host/370959ab-56a7-41ea-afc9-dbf3c8eee748/YDYVzq5xrC.json"),
+            Lottie.network("https://lottie.host/d1fd23f8-662d-42e0-a4e3-6c9c7829f6f2/iCwMxOEwBE.json"),
           ),
           const SizedBox(height: 24),
           Text(

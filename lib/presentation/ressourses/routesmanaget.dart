@@ -1,15 +1,16 @@
 import 'package:ecomme_app/data/network/networkInfo.dart';
+import 'package:ecomme_app/presentation/auth/sign%20up/signup.dart';
 import 'package:ecomme_app/presentation/favorite/favoriteview.dart';
 import 'package:ecomme_app/presentation/forgetpassword/forgetpassword.dart';
 import 'package:ecomme_app/presentation/home/view/home.dart';
-import 'package:ecomme_app/presentation/login/view/login.dart';
+import 'package:ecomme_app/presentation/auth/login/view/login.dart';
 import 'package:ecomme_app/presentation/navigationbottombar/view/navigationbottombar.dart';
 import 'package:ecomme_app/presentation/oboarding/view/onboardingview.dart';
 import 'package:ecomme_app/presentation/productdetails/productdetails.dart';
 import 'package:ecomme_app/presentation/register/register.dart';
 import 'package:ecomme_app/presentation/ressourses/textmanager.dart';
 import 'package:ecomme_app/presentation/splach/splasch_view.dart';
-import 'package:ecomme_app/presentation/store/storeview.dart';
+import 'package:ecomme_app/presentation/store/view/storeview.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -36,13 +37,13 @@ class Routganarator{
         final networkInfo = NetworkInfoImpl(InternetConnectionChecker.createInstance());
         return MaterialPageRoute(builder: (_) => SplashView(networkInfo: networkInfo,));
       case Routes.loginRoutes:
-        return MaterialPageRoute(builder: (_) => const Login());
+        return MaterialPageRoute(builder: (_) => const F_Pagelogin());
       case Routes.naviagationbottombar:
         return MaterialPageRoute(builder: (_) => const NavigationBottomBar());
       case Routes.onBoardingRoutes:
         return MaterialPageRoute(builder: (_) => const Onboardingview());
       case Routes.registerRoutes:
-        return MaterialPageRoute(builder: (_) => const Register());
+        return MaterialPageRoute(builder: (_) => const Signuppage());
       case Routes.forgetPasswordRoutes:
         return MaterialPageRoute(builder: (_) => const Forgetpassword());
       case Routes.homeRoutes:

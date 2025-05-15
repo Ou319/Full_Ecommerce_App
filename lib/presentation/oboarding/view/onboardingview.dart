@@ -1,3 +1,4 @@
+
 import 'package:ecomme_app/app/provider/app_prefs.dart';
 import 'package:ecomme_app/domain/model/modeles.dart';
 import 'package:ecomme_app/presentation/oboarding/viewmodel/oboardingviewmodel.dart';
@@ -9,6 +10,7 @@ import 'package:ecomme_app/presentation/ressourses/valuesmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Onboardingview extends StatefulWidget {
   const Onboardingview({super.key});
@@ -41,9 +43,26 @@ class _OnboardingviewState extends State<Onboardingview> {
   Future<void> _skkipedOnboarding() async {
     final appPreferences = await _appPreferencesFuture;
     await appPreferences.getOnBoardingScreenView();
+    
+    // Check if user is logged in
+    final session = Supabase.instance.client.auth.currentSession;
+    
     if (mounted) {
-      Navigator.pushReplacementNamed(context, Routes.naviagationbottombar);
+      // If session exists and is not expired, navigate to home page
+      // Otherwise, navigate to login page
+      if (session != null && !_isSessionExpired(session)) {
+        Navigator.pushReplacementNamed(context, Routes.naviagationbottombar);
+      } else {
+        // Navigate to login page - make sure you have this route defined
+        Navigator.pushReplacementNamed(context, Routes.loginRoutes);
+      }
     }
+  }
+  
+  // Helper method to check if session is expired
+  bool _isSessionExpired(Session session) {
+    final now = DateTime.now().millisecondsSinceEpoch / 1000;
+    return session.expiresAt != null && session.expiresAt! < now;
   }
 
   @override
@@ -153,12 +172,13 @@ class _OnboardingviewState extends State<Onboardingview> {
                   onTap: () {
                     if (data.currentIndex == data.nbrOfSliders - 1) {
                       _skkipedOnboarding();
+                    } else {
+                      _pageController.animateToPage(
+                        _oboardingviewmodel.goNext(),
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
                     }
-                    _pageController.animateToPage(
-                      _oboardingviewmodel.goNext(),
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
                   },
                   child: Container(
                     width: Appsize.a60,

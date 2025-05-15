@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ecomme_app/app/supabase_auth_service.dart';
 import 'package:ecomme_app/datalist/categories/Popularcategory.dart';
 import 'package:ecomme_app/presentation/home/view/AllProductsPage.dart';
 import 'package:ecomme_app/presentation/home/view/AllBrandsPage.dart';
@@ -27,6 +28,18 @@ class _HomeState extends State<Home> {
   bool isLoading = true;
   List<Map<String, dynamic>> dbCategories = [];
   final supabase = Supabase.instance.client;
+  final _authresponsefullname= SupabaseAuthService();
+  String fullName = 'Loading...';
+
+  Future<void> _fetchUserFullName() async {
+  final getFullname= await _authresponsefullname.getFullName();
+  
+  setState(() {
+    fullName = getFullname ?? 'Loading...';
+  });
+    
+  }
+
 
   Future<void> _fetchCategories() async {
     try {
@@ -51,6 +64,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _fetchCategories();
+    _fetchUserFullName();
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
@@ -73,6 +87,7 @@ class _HomeState extends State<Home> {
                 categories: categories,
                 dbCategories: dbCategories,
                 isLoading: isLoading,
+                fullName: fullName,
               ),
               const SizedBox(height: 20),
               const BrandsWidget(),
@@ -90,12 +105,14 @@ class HeaderWidget extends StatelessWidget {
   final List<CategoryModel> categories;
   final List<Map<String, dynamic>> dbCategories;
   final bool isLoading;
+  final String fullName;
 
   const HeaderWidget({
     super.key,
     required this.categories,
     required this.dbCategories,
     required this.isLoading,
+    required this.fullName
   });
 
   @override
@@ -131,7 +148,8 @@ class HeaderWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "OUTMANE EL OUAFA",
+                    fullName,
+
                     style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 18,
@@ -494,7 +512,7 @@ class _ProductListWidgetState extends State<ProductListWidget> {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 0.7,
+              childAspectRatio: 0.65,
             ),
             itemCount: productList.length,
             itemBuilder: (context, index) {

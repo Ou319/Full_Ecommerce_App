@@ -5,14 +5,20 @@ import 'package:ecomme_app/presentation/base/baseviewmodel.dart';
 import 'package:ecomme_app/presentation/favorite/favoriteview.dart';
 import 'package:ecomme_app/presentation/home/view/home.dart';
 import 'package:ecomme_app/presentation/profile/profile.dart';
-import 'package:ecomme_app/presentation/store/storeview.dart';
+import 'package:ecomme_app/presentation/store/view/storeview.dart';
 import 'package:flutter/cupertino.dart';
 
 class Navigationbottombarmodel extends Baseviewmodel implements Naviagationbottombarinputs, Naviagationbottombaroutputs {
 
+  // here 
   int _selectIndex = 0;
   StreamController _streamController = StreamController<int>.broadcast();
   late final List<Widget> _pages;
+
+  late final PageController _pageController;
+
+PageController get pageController => _pageController;
+
 
   @override
   void dispose() {
@@ -22,7 +28,8 @@ class Navigationbottombarmodel extends Baseviewmodel implements Naviagationbotto
 
   @override
   void start() {
-    _pages = [Home(), Favoriteview(), Storeview(), Profile()];
+    _pageController = PageController(initialPage: _selectIndex);
+    _pages = [Home(),Storeview() ,Favoriteview(), Profile()];
   }
   
   @override

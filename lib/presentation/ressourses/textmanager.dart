@@ -30,4 +30,13 @@ static const String categories4description = "Elegant and functional furniture t
 static const String categories5description = "Exquisite jewelry and watches to complement your style";
 static const String categories6description = "Premium quality fabrics and fashionable apparel collections";
 
+
+static const String Search_in_store = "Search in store";
+static const String Store = "Store";
+
+
+
+
+
+
 }

@@ -52,7 +52,7 @@ class _SplashViewState extends State<SplashView> {
   _goNext() {
     _appPreferences.iSOnBoardingScreenView().then((hasSeenOnboarding) {
       if (hasSeenOnboarding) {
-        Navigator.pushReplacementNamed(context, Routes.naviagationbottombar);
+        Navigator.pushReplacementNamed(context, Routes.loginRoutes);
       } else {
         Navigator.pushReplacementNamed(context, Routes.onBoardingRoutes);
       }

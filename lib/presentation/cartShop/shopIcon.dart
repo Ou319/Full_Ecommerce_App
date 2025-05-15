@@ -1,5 +1,5 @@
 import 'package:ecomme_app/presentation/cartShop/cartshop.dart';
-import 'package:ecomme_app/view/homePages/ShopFiles/prodectSelected/producteselected.dart';
+
 import 'package:ecomme_app/app/provider/Buyproductes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

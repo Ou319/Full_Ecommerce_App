@@ -119,7 +119,9 @@ class _AllBrandsPageState extends State<AllBrandsPage> {
     final childAspectRatio = isSmallScreen ? 2.5 : 3.0;
 
     return Scaffold(
+        backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'All Brands',
           style: GoogleFonts.poppins(
@@ -155,17 +157,11 @@ class _AllBrandsPageState extends State<AllBrandsPage> {
           Padding(
             padding: EdgeInsets.all(size.width * 0.04),
             child: Container(
-              height: size.height * 0.06,
+              height: 64,
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                border: Border.all(color: Colors.black,width: 1),
               ),
               child: TextField(
                 controller: _searchController,
@@ -183,7 +179,7 @@ class _AllBrandsPageState extends State<AllBrandsPage> {
                       ? IconButton(
                           icon: Icon(Icons.clear, color: Colors.grey[600], size: size.width * 0.05),
                           onPressed: () {
-                            _searchController.clear();
+                            _searchController.clear();  
                             _onSearchChanged();
                           },
                         )

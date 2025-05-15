@@ -164,6 +164,7 @@ class _AllProductsPageState extends State<AllProductsPage> {
     final childAspectRatio = isSmallScreen ? 0.7 : 0.8;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'All Products',

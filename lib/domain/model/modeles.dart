@@ -39,12 +39,14 @@ class Categories {
 
 // model productes
 
-class ProducteModel {
+
+ class ProducteModel {
   final String ImageAasset;
   final String Title;
   final String description;
   final String category;
   final double Price;
+  final double rating; 
   bool isFavorit;
   int count;
 
@@ -54,6 +56,7 @@ class ProducteModel {
     required this.description,
     required this.category,
     required this.ImageAasset,
+    required this.rating, // ✅ 
     this.count = 1,
     this.isFavorit = false,
   });
@@ -66,6 +69,7 @@ class ProducteModel {
       description: json['description'] ?? '',
       category: json['category'] ?? '',
       ImageAasset: json['imageAsset'] ?? '',
+      rating: (json['rating'] ?? 0.0).toDouble(), // ✅ ه
       count: json['count'] ?? 1,
       isFavorit: json['isFavorit'] ?? false,
     );
@@ -81,6 +85,7 @@ class ProducteModel {
       'description': description,
       'category': category,
       'imageAsset': ImageAasset,
+      'rating': rating, // ✅
       'count': count,
       'isFavorit': isFavorit,
     };

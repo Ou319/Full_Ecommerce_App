@@ -1,10 +1,10 @@
-import 'package:ecomme_app/app/provider/Buyproductes.dart';
-import 'package:ecomme_app/domain/model/modeles.dart';
-import 'package:ecomme_app/presentation/cartShop/cartshop.dart';
-import 'package:ecomme_app/view/homePages/home/pages/liked.dart';
+import 'package:ecomme_app/app/provider/Likedproducte.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../domain/model/modeles.dart';
+import '../../app/provider/Buyproductes.dart';
+import '../cartShop/cartshop.dart';
 
 class Shapeproducte extends StatefulWidget {
   final String imageAsset;
@@ -31,169 +31,172 @@ class Shapeproducte extends StatefulWidget {
 }
 
 class _ShapeproducteState extends State<Shapeproducte> {
+  
   bool isAdd = false;
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<Buyproductes>(context);
-
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.imageAsset),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.star, color: Colors.white, size: 16),
-                            const SizedBox(width: 4),
-                            Text(
-                              widget.rating.toStringAsFixed(1),
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            widget.isFavorit = !widget.isFavorit;
-                          });
-                        },
-                        child: Liked(isFavorit: widget.isFavorit),
-                      ),
-                    ],
-                  ),
-                ],
+    final cartProvider = Provider.of<Buyproductes>(context); // and this one is for producte in cart shop
+    final likedProvider = Provider.of<LikedProductes>(context);// this for get shared prefences 
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // صورة المنتج + التقييم والقلب في الأعلى
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              image: DecorationImage(
+                image: NetworkImage(widget.imageAsset),
+                fit: BoxFit.cover,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.title,
-                    style: GoogleFonts.inder(),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.white, size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          widget.rating.toStringAsFixed(1),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        widget.type,
-                        style: GoogleFonts.inder(fontWeight: FontWeight.w100),
-                      ),
-                      const SizedBox(width: 3),
-                      const Icon(Icons.verified, color: Colors.blue, size: 20),
-                    ],
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        widget.isFavorit = !widget.isFavorit;
+                          final product = ProducteModel(
+                          Price: widget.price,
+                          Title: widget.title,
+                          rating: widget.rating,
+                          description: "",
+                          category: widget.type,
+                          ImageAasset: widget.imageAsset,
+                          count: widget.count,
+                          isFavorit: widget.isFavorit,
+                        );
+
+                        likedProvider.toggleLike(product);
+                      });
+                    },
+                    child: Icon(
+                      widget.isFavorit ? Icons.favorite : Icons.favorite_border,
+                      color: widget.isFavorit ? Colors.red : Colors.grey,
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "\$ ${widget.price}",
-                        style: GoogleFonts.inder(fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          try {
-                            // Create a ProducteModel correctly
-                            final product = ProducteModel(
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.title,
+                  style: GoogleFonts.inder(),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      widget.type,
+                      style: GoogleFonts.inder(fontWeight: FontWeight.w100),
+                    ),
+                    const SizedBox(width: 3),
+                    const Icon(Icons.verified, color: Colors.blue, size: 18),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "\$ ${widget.price.toStringAsFixed(2)}",
+                      style: GoogleFonts.inder(fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        final product = ProducteModel(
+                          Price: widget.price,
+                          rating: widget.rating,
+                          Title: widget.title,
+                          description: "",
+                          category: widget.type,
+                          ImageAasset: widget.imageAsset,
+                          count: widget.count,
+                          isFavorit: widget.isFavorit,
+                        );
 
+                        final exists = cartProvider.ProducteSelected
+                            .any((item) => item.Title == product.Title);
 
-                              
-                              Price: widget.price,
-                              Title: widget.title,
-                              description: "", // You can pass real description if you have
-                              category: widget.type, // Passing type as category
-                              ImageAasset: widget.imageAsset,
-                              count: widget.count,
-                              isFavorit: widget.isFavorit,
-                            );
+                        if (!exists) {
+                          cartProvider.addProduct(product);
+                          setState(() => isAdd = true);
 
-                            // Check if already exists
-                            final exists = cartProvider.ProducteSelected
-                                .any((item) => item.Title == product.Title);
-
-                            if (!exists) {
-                              cartProvider.addProduct(product);
-                              setState(() {
-                                isAdd = true;
-                              });
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const CartShop(),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Item is already added")),
-                              );
-                            }
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: ${e.toString()}")),
-                            );
-                          }
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          width: 50,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                            ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CartShop()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Item is already added")),
+                          );
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
                           ),
-                          child: Center(
-                            child: Text(
-                              isAdd ? "✓" : "+",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            isAdd ? "✓" : "+",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
