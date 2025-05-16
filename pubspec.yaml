@@ -22,7 +22,8 @@ dependencies:
   share_plus: ^10.1.4
   internet_connection_checker: ^3.0.1
   palette_generator: ^0.3.3+6
-  flutter_facebook_auth: ^4.4.1+1
+  fl_chart: ^0.64.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

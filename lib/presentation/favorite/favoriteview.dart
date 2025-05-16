@@ -30,6 +30,7 @@ class _FavoriteviewState extends State<Favoriteview> {
         return Scaffold(
           backgroundColor: Colors.white, 
           appBar: AppBar(
+            backgroundColor: Colors.white,
             title: const Text('Favorites'),
             actions: [
               if (likedProducts.isNotEmpty)

@@ -26,7 +26,6 @@ class _CartShopState extends State<CartShop> {
           'Shopping Cart',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -37,14 +36,14 @@ class _CartShopState extends State<CartShop> {
             padding: const EdgeInsets.only(right: 16),
             child: DropdownButton<String>(
               value: _selectedFilter,
-              icon: const Icon(Icons.filter_list, color: Colors.black),
+              icon: const Icon(Icons.filter_alt_outlined, color: Colors.black),
               iconSize: 22,
               elevation: 8,
               style: const TextStyle(color: Colors.black, fontSize: 14),
-              underline: Container(
-                height: 1,
-                color: Colors.grey[300],
-              ),
+              dropdownColor: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              menuMaxHeight: 300,
+              underline: Container(),
               onChanged: (String? newValue) {
                 setState(() {
                   _selectedFilter = newValue!;
@@ -59,7 +58,10 @@ class _CartShopState extends State<CartShop> {
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(value),
+                  ),
                 );
               }).toList(),
             ),
@@ -123,7 +125,7 @@ class EmptyCartView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,9 +133,8 @@ class EmptyCartView extends StatelessWidget {
           Container(
             width: 300,
             height: 300,
-           
-            child: 
-            Lottie.network("https://lottie.host/d1fd23f8-662d-42e0-a4e3-6c9c7829f6f2/iCwMxOEwBE.json"),
+            child: Lottie.network(
+                "https://lottie.host/d1fd23f8-662d-42e0-a4e3-6c9c7829f6f2/iCwMxOEwBE.json"),
           ),
           const SizedBox(height: 24),
           Text(
@@ -263,7 +264,8 @@ class _ProductContainerState extends State<ProductContainer> {
                               width: double.infinity,
                               height: double.infinity,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => Container(
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
                                 color: Colors.grey[200],
                                 child: Icon(
                                   Icons.image_not_supported_outlined,
@@ -271,16 +273,21 @@ class _ProductContainerState extends State<ProductContainer> {
                                   size: widget.isSmallScreen ? 24 : 32,
                                 ),
                               ),
-                              loadingBuilder: (context, child, loadingProgress) {
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
                                 return Container(
                                   color: Colors.grey[200],
                                   child: Center(
                                     child: CircularProgressIndicator(
-                                      value: loadingProgress.expectedTotalBytes != null
-                                          ? loadingProgress.cumulativeBytesLoaded /
-                                              loadingProgress.expectedTotalBytes!
-                                          : null,
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
                                       strokeWidth: 2,
                                       color: Colors.blue,
                                     ),
@@ -368,7 +375,8 @@ class _ProductContainerState extends State<ProductContainer> {
                           size: widget.isSmallScreen ? 22 : 24,
                         ),
                         onPressed: () {
-                          _removeProductWithUndo(context, widget.cartProvider, product);
+                          _removeProductWithUndo(
+                              context, widget.cartProvider, product);
                         },
                         constraints: BoxConstraints(
                           minWidth: widget.isSmallScreen ? 36 : 40,
@@ -405,7 +413,8 @@ class _ProductContainerState extends State<ProductContainer> {
                                       icon: Icons.remove,
                                       onPressed: () {
                                         if (product.count > 1) {
-                                          widget.cartProvider.updateProductCount(
+                                          widget.cartProvider
+                                              .updateProductCount(
                                             product,
                                             product.count - 1,
                                           );
@@ -414,7 +423,8 @@ class _ProductContainerState extends State<ProductContainer> {
                                       isSmallScreen: widget.isSmallScreen,
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 12),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 12),
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 12,
                                         vertical: 6,
@@ -426,7 +436,8 @@ class _ProductContainerState extends State<ProductContainer> {
                                       child: Text(
                                         product.count.toString(),
                                         style: TextStyle(
-                                          fontSize: widget.isSmallScreen ? 16 : 18,
+                                          fontSize:
+                                              widget.isSmallScreen ? 16 : 18,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -434,8 +445,8 @@ class _ProductContainerState extends State<ProductContainer> {
                                     QuantityButton(
                                       icon: Icons.add,
                                       onPressed: () {
-                                        widget.cartProvider
-                                            .updateProductCount(product, product.count + 1);
+                                        widget.cartProvider.updateProductCount(
+                                            product, product.count + 1);
                                       },
                                       isSmallScreen: widget.isSmallScreen,
                                     ),
@@ -455,7 +466,8 @@ class _ProductContainerState extends State<ProductContainer> {
     );
   }
 
-  void _removeProductWithUndo(BuildContext context, Buyproductes cartProvider, product) {
+  void _removeProductWithUndo(
+      BuildContext context, Buyproductes cartProvider, product) {
     cartProvider.removeProduct(product);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -646,7 +658,8 @@ class CartSummary extends StatelessWidget {
                   SnackBar(
                     content: const Text("Proceeding to checkout..."),
                     behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     margin: const EdgeInsets.all(16),
                   ),
                 );
@@ -654,7 +667,6 @@ class CartSummary extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue[700],
                 foregroundColor: Colors.white,
-                
                 padding: EdgeInsets.symmetric(
                   vertical: isSmallScreen ? 14 : 16,
                 ),

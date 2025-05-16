@@ -1,4 +1,6 @@
 import 'package:ecomme_app/app/supabase_auth_service.dart';
+import 'package:ecomme_app/presentation/admindashbord/screens/homepage.dart';
+import 'package:ecomme_app/presentation/admindashbord/screens/navigationbottombaradmin.dart';
 import 'package:ecomme_app/presentation/auth/sign%20up/signup.dart';
 import 'package:ecomme_app/presentation/navigationbottombar/view/navigationbottombar.dart';
 import 'package:ecomme_app/presentation/ressourses/assetsmanager.dart';
@@ -23,24 +25,52 @@ class _F_PageloginState extends State<F_Pagelogin> {
 
   final _authService = SupabaseAuthService();
 
-  Future<void> _login() async {
-    final error = await _authService.login(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
+Future<void> _login() async {
+  setState(() => _isLoading = true);
+  final error = await _authService.login(
+    email: _emailController.text.trim(),
+    password: _passwordController.text.trim(),
+  );
 
-    if (error != null) {
+  if (error != null) {
+    if (!mounted) return;
+    setState(() => _isLoading = false);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+  } else {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+
+    if (userId != null) {
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .single();
+
+      final role = response['role'];
+
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error)));
+      setState(() => _isLoading = false);
+
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Navigationbottombaradmin()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const NavigationBottomBar()),
+        );
+      }
     } else {
       if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const NavigationBottomBar()),
-      );
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("User not found")));
     }
   }
+}
+
 
 
   @override

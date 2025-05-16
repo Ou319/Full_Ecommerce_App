@@ -84,7 +84,10 @@ class _EditprofileState extends State<Editprofile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Profile')),
+      backgroundColor: AppColor.white,
+      appBar: AppBar(
+        backgroundColor: AppColor.white,
+        title: const Text('Edit Profile')),
       body: Form(
         key: _formKey,
         child: Column(

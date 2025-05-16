@@ -1,4 +1,3 @@
-
 import 'package:ecomme_app/app/provider/app_prefs.dart';
 import 'package:ecomme_app/domain/model/modeles.dart';
 import 'package:ecomme_app/presentation/oboarding/viewmodel/oboardingviewmodel.dart';
@@ -225,4 +224,4 @@ class _OnboardingviewState extends State<Onboardingview> {
     _oboardingviewmodel.dispose();
     super.dispose();
   }
-}
+} 
